@@ -1,55 +1,85 @@
-@import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400&family=Prompt:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Roboto+Mono:wght@200;300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400&family=Prompt:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Roboto+Mono:wght@200;300;400&display=swap");
 body {
-    margin: 0;
-    font-family: 'Prompt', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+  margin: 0;
+  font-family: "Prompt", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 .font-jamjuree {
-    font-family: 'Bai Jamjuree', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: "Bai Jamjuree", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .font-roboto-mono {
-    font-family: 'Roboto Mono', monospace;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: "Roboto Mono", monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .text-weight-200 {
-    font-weight:200;
+  font-weight: 200;
 }
 
 .text-weight-300 {
-    font-weight:300;
+  font-weight: 300;
 }
 
 .text-weight-400 {
-    font-weight:400;
+  font-weight: 400;
 }
 
 .text-weight-500 {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .text-weight-200-italics {
-    font-weight:200;
-    font-style:italic;
+  font-weight: 200;
+  font-style: italic;
 }
 
 .text-weight-300-italics {
-    font-weight:300;
-    font-style:italic;
+  font-weight: 300;
+  font-style: italic;
 }
 
 .text-weight-400-italics {
-    font-weight:400;
-    font-style:italic;
+  font-weight: 400;
+  font-style: italic;
 }
 
 .text-weight-500-italics {
-    font-weight:500;
-    font-style:italic;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.bg-white-blur {
+  background: radial-gradient(
+      ellipse at 50% 50%,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    radial-gradient(ellipse at 70% 60%, #c3e060 0%, rgba(195, 224, 96, 0) 90%),
+    radial-gradient(ellipse at 30% 30%, #c3e060 0%, rgba(195, 224, 96, 0) 60%),
+    radial-gradient(
+      ellipse at bottom left,
+      #00a3cb 0%,
+      rgba(0, 163, 203, 0) 70%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(18, 46, 119, 0) 0%,
+      rgba(18, 46, 119, 0) 75%,
+      #122e77 100%
+    ),
+    linear-gradient(
+      to right,
+      #625793 0%,
+      #d55d64 35%,
+      #e49129 65%,
+      #c0671c 100%
+    );
+  background-blend-mode: screen, luminosity, saturation, darken, color-dodge,
+    color;
 }

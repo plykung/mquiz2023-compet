@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400&family=Prompt:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Roboto+Mono:wght@200;300;400&display=swap');
+body {
+    margin: 0;
+    font-family: 'Prompt', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+.font-jamjuree {
+    font-family: 'Bai Jamjuree', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.font-roboto-mono {
+    font-family: 'Roboto Mono', monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.text-weight-200 {
+    font-weight:200;
+}
+
+.text-weight-300 {
+    font-weight:300;
+}
+
+.text-weight-400 {
+    font-weight:400;
+}
+
+.text-weight-500 {
+    font-weight: 500;
+}
+
+.text-weight-200-italics {
+    font-weight:200;
+    font-style:italic;
+}
+
+.text-weight-300-italics {
+    font-weight:300;
+    font-style:italic;
+}
+
+.text-weight-400-italics {
+    font-weight:400;
+    font-style:italic;
+}
+
+.text-weight-500-italics {
+    font-weight:500;
+    font-style:italic;
+}

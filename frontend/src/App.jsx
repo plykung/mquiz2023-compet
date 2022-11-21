@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import AdminRouter from "./Admin";
 import Competition from './Competition';
 import './css/App.css'
+import 'animate.css';
 import LoginPage from "./Login";
 import Professors from "./Professors";
 import StreamerRoutes from "./Streamer";

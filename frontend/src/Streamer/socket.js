@@ -17,6 +17,7 @@ function StreamerSocket() {
             setIsConnected(false)
         })
         socket.on("CURRENT_GAME_STATUS", (data)=>{
+            if(data === "SELECT_QUESTION") {setCurrentQuestion()}
             setCurrentStatus(data)
         })
         socket.on("CURRENT_QUESTION_OWNER", (data)=>{
@@ -25,7 +26,7 @@ function StreamerSocket() {
         socket.on("CURRENT_LOOP", (data)=>{
           setLoop(data)
         })
-        socket.on("CURRENT_QUESTION_SELECTED", (data)=>{setCurrentQuestion(data)});
+        socket.on("CURRENT_QUESTION_SELECTED", (data)=>{setCurrentQuestion(data); console.log(data)});
         socket.on("COUNTDOWN_UNTIL", (data)=>{setTimeLeft(data)})
         return () =>{
             socket.off("connect")

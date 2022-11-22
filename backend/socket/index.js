@@ -72,6 +72,8 @@ io.on("connection", (socket) => {
       let query = await db.query("UPDATE system_variables SET value = ? WHERE id = ?", [data.question_id, "CURRENT_QUESTION"])
       let setSelect = await db.query("UPDATE questions SET isSelected = 1 WHERE id = ?", [data.question_id])
       io.emit("CURRENT_GAME_STATUS", "AWAIT_MC")
+      io.emit("CURRENT_QUESTION_OWNER", data.user_id)
+      io.emit("CURRENT_QUESTION_SELECTED", data.question_id)
     }catch(error){
       console.log(error)
       io.emit("CURRENT_GAME_STATUS", "ERROR AT socket.on(select_question) ON /socket/index.js")

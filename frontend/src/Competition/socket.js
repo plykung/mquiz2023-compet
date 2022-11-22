@@ -11,7 +11,7 @@ function SocketConnection() {
     useEffect(()=>{
         socket.on("connect", ()=>{setIsConnected(socket.connected)});
         socket.on("disconnect", ()=>{setIsConnected(socket.connected)});
-        socket.on("CURRENT_GAME_STATUS", (data)=>{set_CURRENT_GAME_STATUS(data)});
+        socket.on("CURRENT_GAME_STATUS", (data)=>{if(data === "SELECT_QUESTION") {set_CURRENT_QUESTION_SELECTED()} set_CURRENT_GAME_STATUS(data)});
         socket.on("CURRENT_QUESTION_OWNER", (data)=>{set_CURRENT_QUESTION_OWNER(data)});
         socket.on("CURRENT_QUESTION_SELECTED", (data)=>{set_CURRENT_QUESTION_SELECTED(data)});
         socket.on("COUNTDOWN_UNTIL", (data)=>{set_COUNTDOWN_UNTIL(data)})

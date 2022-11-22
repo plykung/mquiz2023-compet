@@ -6,15 +6,16 @@ function StreamerWaitMc({CURRENT_QUESTION}) {
     const [question, setQuestion] = useState()
 
     useEffect(()=>{
-        if(CURRENT_QUESTION) {
-            fetchQuestion(CURRENT_QUESTION)
-        }
-    }, [])
+          if(CURRENT_QUESTION) fetchQuestion(CURRENT_QUESTION)
+    }, [CURRENT_QUESTION])
 
     const fetchQuestion = async (question) =>{
-        let q = await FetchQuestionData(question)
-        console.log(q)
-        setQuestion(q)
+      try{
+        let data = await FetchQuestionData(question)
+        setQuestion(data)
+      }catch(err){
+        console.log(err)
+      }
     }
     
   return (

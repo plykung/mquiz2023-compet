@@ -13,7 +13,7 @@ const socketHandler = socket.socketApi
 socketHandler.io.attach(http, {cors: {origin: "*"}})
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173", "http://10.83.217.233:5173", "http://10.83.216.133:5173"],
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173", "http://10.83.217.233:5173", "http://10.83.218.34:5173"],
   })
 );
 const port = process.env.PORT || 8080;
@@ -25,11 +25,13 @@ const login = require("./login")
 const questions = require("./question")
 const answer = require("./answer")
 const user = require("./user")
+const item = require("./item")
 
 app.use("/login", login)
 app.use("/questions", questions)
 app.use("/answer", answer)
 app.use("/user", user)
+app.use("/items", item)
 
 app.get("/", (req, res) => {
   res.status(200).json({ status: `Server is running at port ${port}` });

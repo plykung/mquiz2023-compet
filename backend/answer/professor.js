@@ -8,7 +8,7 @@ router.get("/answers/:current_question", async (req,res)=>{
     let {current_question} = req.params
     console.log(req.body)
  try{
-  let userAnswer = await db.query("SELECT answer.user_id, owner_name, answer, question_id, createdDateTime FROM answer JOIN users ON users.user_id = answer.user_id WHERE question_id = ?", [current_question])
+  let userAnswer = await db.query("SELECT answer.user_id, owner_name, subrole, answer, question_id, createdDateTime FROM answer JOIN users ON users.user_id = answer.user_id WHERE question_id = ?", [current_question])
   res.status(200).json({data: userAnswer})
  }catch(err){
   console.log(err)

@@ -36,4 +36,29 @@ const LogData = async (user,q_id,answer) => {
         return ret;
     }
 
-export {FetchQuestionData, LogData, timeFormat}
+const FetchItems = async (user_id)=>{
+    try{
+        let items = await axios.get(`${ENDPOINT}/items/${user_id}`)
+        return items.data.data
+    }catch(err){
+        console.error(err)
+    }
+}
+
+const ItemBeingUsed = async (user_id, item_id, CURRENT_QUESTION) =>{
+    try{
+        let execute = await axios.post(`${ENDPOINT}/items/`, {user_id: user_id, item_id: item_id, executed_at: CURRENT_QUESTION})
+    }catch(err){
+        console.error(err)
+    }
+}
+
+const GetHint = async (q_id) =>{
+    try{
+        let hint = await axios.get(`${ENDPOINT}/items/hint/${q_id}/`)
+        return hint.data
+    }catch(err){
+        console.error(err)
+    }
+}
+export {FetchQuestionData, LogData, timeFormat, FetchItems, ItemBeingUsed, GetHint}

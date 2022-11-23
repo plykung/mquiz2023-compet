@@ -49,4 +49,13 @@ const UpdateScore = async (user_id, score, question_id) =>{
     }
 }
 
-export {timeFormat, FetchQuestionData, FetchUserAnswer, UpdateScore}
+const GetUserItems = async (q_id) => {
+    try{
+        let data = await axios.get(`${ENDPOINT}/items/executed/${q_id}/`)
+        return data.data
+    }catch(err){
+        console.error(err)
+    }
+}
+
+export {timeFormat, FetchQuestionData, FetchUserAnswer, UpdateScore, GetUserItems}

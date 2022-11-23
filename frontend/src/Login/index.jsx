@@ -13,6 +13,9 @@ function LoginPage(props) {
     try{
       let data = await handleLogin(e);
       localStorage.setItem("user", JSON.stringify(data.data))
+      if(data?.data.role === "participant") return navigate("/competition")
+      if(data?.data.role === "streamer") return navigate("/streamer")
+      if(data?.data.role === "admin") return navigate("/admin")
     }catch(err){
       setIsLoading(false)
       alert(err.reason)

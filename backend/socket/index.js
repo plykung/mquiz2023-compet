@@ -128,8 +128,9 @@ io.on("connection", (socket) => {
       console.log(err)
     }
   })
-  socket.on("FORCE_EMIT_QUESTION", (data)=>{
+  socket.on("FORCE_EMIT_QUESTION", async (data)=>{
     CURRENT_QUESTION_SELECTED = data.question_id
+    await db.query("UPDATE system_variables SET value = ? WHERE id = ?", [data.question_id,"CURRENT_QUESTION"])
     io.emit("CURRENT_GAME_STATUS", CURRENT_GAME_STATUS);
     io.emit("CURRENT_QUESTION_OWNER", CURRENT_QUESTION_OWNER);
     io.emit("CURRENT_QUESTION_SELECTED", CURRENT_QUESTION_SELECTED);

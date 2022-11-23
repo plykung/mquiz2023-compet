@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
         .json({ success: false, reason: "username or password is incorrect" });
     if (query.length === 1) {
       let userData = await db.query(
-        "SELECT user_id, username, role, owner_name FROM users WHERE username = ?",
+        "SELECT user_id, username, role, owner_name, subrole FROM users WHERE username = ?",
         [username]
       );
       res.status(200).json({ success: true, reason: "", data: userData[0] });

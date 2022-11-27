@@ -10,7 +10,7 @@ const professor = require("./professor")
 router.post("/", async (req, res) => {
     let {question_id, user_id, answer} = req.body
   try{
-    let query = await db.query("INSERT INTO answer_log (user_id, question_id, answer) VALUES (?,?,?)", [user_id, question_id, answer])
+    await db.query("INSERT INTO answer_log (user_id, question_id, answer) VALUES (?,?,?)", [user_id, question_id, answer])
     res.status(200).json({error: false, success: true})
   }catch(err){
     console.log(err)

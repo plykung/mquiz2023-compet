@@ -23,3 +23,9 @@ Software in this reprository is developed according to competition rule which is
 - There are 20 questions in each round, with 5 backups in case of a tie.
 - Every team will do the same question but answer from team selecting the question will be graded first. If the team selecting question is correct, it will get its full mark. If not, other team answering the question will be graded and get half of the score should they are correct.
 
+
+
+## TO BE FIXED
+- Hint, show only once
+- Save upon last second
+- หลังจากตรวจข้อสอบเสร็จ ให้แสดงหน้าว่าใครตอบถูกหรือผิด พร้อมแสดงคำตอบ ก่อนแสดงคะแนนรวมทั้งหมด

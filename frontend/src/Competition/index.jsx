@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { } from "react";
 import WaitingScreen from "./Components/WaitingScreen";
 import SocketConnection from "./socket";
 import QuestionSelector from "./Components/SelectQuestion";
@@ -6,6 +6,7 @@ import WaitingMC from "./Components/WaitingMC";
 import AnswerQuestion from "./Components/Answer";
 import AwaitScore from "./Components/AwaitScore";
 import ScoreSummary from "./Components/ScoreSummary";
+import PlayResult from "./Components/Result";
 
 function Competition() {
   const [
@@ -42,6 +43,7 @@ function Competition() {
       />
     );
   if (CURRENT_GAME_STATUS === "AWAIT_SCORE") return <AwaitScore />;
+  if (CURRENT_GAME_STATUS === "SHOW_SUMMARY") return <PlayResult CURRENT_QUESTION={CURRENT_QUESTION_SELECTED} />;
   if (CURRENT_GAME_STATUS === "REVEAL_SCORE") return <ScoreSummary />;
   return <></>;
 }

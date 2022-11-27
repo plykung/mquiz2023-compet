@@ -47,7 +47,7 @@ io.on("connection", (socket) => {
   socket.on("CURRENT_QUESTION_OWNER", async (data) => {
     CURRENT_QUESTION_OWNER = data.CURRENT_QUESTION_OWNER;
     try{
-      let query = await db.query("UPDATE system_variables SET value = ? WHERE id = ?", [data.CURRENT_QUESTION_OWNER, "CURRENT_TEAM"])
+      await db.query("UPDATE system_variables SET value = ? WHERE id = ?", [data.CURRENT_QUESTION_OWNER, "CURRENT_TEAM"])
       io.emit("CURRENT_QUESTION_OWNER", CURRENT_QUESTION_OWNER);
     }catch(error){
       console.log(error)
@@ -69,8 +69,8 @@ io.on("connection", (socket) => {
     CURRENT_QUESTION_OWNER = data.user_id
     CURRENT_QUESTION_SELECTED = data.question_id
     try{
-      let query = await db.query("UPDATE system_variables SET value = ? WHERE id = ?", [data.question_id, "CURRENT_QUESTION"])
-      let setSelect = await db.query("UPDATE questions SET isSelected = 1 WHERE id = ?", [data.question_id])
+      await db.query("UPDATE system_variables SET value = ? WHERE id = ?", [data.question_id, "CURRENT_QUESTION"])
+      await db.query("UPDATE questions SET isSelected = 1 WHERE id = ?", [data.question_id])
       io.emit("CURRENT_GAME_STATUS", "AWAIT_MC")
       io.emit("CURRENT_QUESTION_OWNER", data.user_id)
       io.emit("CURRENT_QUESTION_SELECTED", data.question_id)
@@ -98,14 +98,13 @@ io.on("connection", (socket) => {
     io.emit("CURRENT_QUESTION_SELECTED", CURRENT_QUESTION_SELECTED);
   })
   //HANDLE START AND TIME LEFT
-  socket.on("START_QUESTION", async (data) =>{
+  socket.on("START_QUESTION", async () =>{
     try{
       let question_data = await db.query("SELECT id, time FROM questions WHERE id = ? LIMIT 1", [CURRENT_QUESTION_SELECTED])
       let time = parseInt(question_data[0].time)
       TIME_LEFT = time
       io.emit("COUNTDOWN_UNTIL", TIME_LEFT)
       let interval = setInterval(async ()=>{
-        try{
           TIME_LEFT = TIME_LEFT-1
           console.log(`TIME LEFT: ${TIME_LEFT}`)
           io.emit("COUNTDOWN_UNTIL", TIME_LEFT)
@@ -115,14 +114,11 @@ io.on("connection", (socket) => {
               CURRENT_GAME_STATUS = "AWAIT_SCORE"
               let getLatest = await db.query("SELECT user_id, answer, question_id, createdDateTime FROM answer_log t1 INNER JOIN (SELECT MAX(createdDateTime) as maxTime FROM answer_log GROUP BY answer_log.user_id) t2 ON t1.createdDateTime = t2.maxTime  WHERE question_id = ?", [CURRENT_QUESTION_SELECTED])
                getLatest.forEach((row)=>{
-                db.query("INSERT INTO answer (user_id, answer, question_id) VALUES (?,?,?)", [row.user_id, row.answer, row.question_id])
+                db.query("INSERT INTO answer (user_id, answer, question_id, score) VALUES (?,?,?,0)", [row.user_id, row.answer, row.question_id])
                })
               io.emit("CURRENT_GAME_STATUS", CURRENT_GAME_STATUS)
-            }, 1000)
+            }, 3000)
           }
-        }catch(err){
-          throw err
-        }
       }, 1000)
     }catch(err){
       console.log(err)

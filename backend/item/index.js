@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
-const { route } = require("../login");
 
 //ANSWER LOG
 // path : /items
@@ -33,7 +32,7 @@ router.get("/executed/:question_id", async (req,res)=>{
         let streakCriteriaIsMet
         if(executedStreak.length > 0) streakCriteriaIsMet = await db.query("SELECT DISTINCT(user_id) AS user_id, questions.id, SUM(answer.score) AS score FROM answer JOIN questions ON questions.id = answer.question_id WHERE user_id IN (?) AND questions.sequence <= ? GROUP BY user_id", [teamExecutedStreak, sequence])
         for(let i = 0; i<streakCriteriaIsMet.length; i++){
-            if(parseInt(streakCriteriaIsMet[i].score) === sequence*25.00){
+            if(parseInt(streakCriteriaIsMet[i].score) >= sequence*25.00){
                 teamWithStreak.push(streakCriteriaIsMet[i].user_id)
             }
         }

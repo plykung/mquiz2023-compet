@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Card } from "react-daisyui";
 import { useNavigate } from "react-router-dom";
 import * as BsIcon from "react-icons/bs"
+import { PropTypes } from "prop-types";
 
 function WaitingScreen({connection}) {
   const [user, setUser] = useState();
@@ -29,6 +30,10 @@ function WaitingScreen({connection}) {
       </div>
     </div>
   );
+}
+
+WaitingScreen.propTypes = {
+  connection: PropTypes.bool
 }
 
 export default WaitingScreen;

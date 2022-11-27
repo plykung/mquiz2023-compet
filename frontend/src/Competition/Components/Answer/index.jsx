@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import CanvasDraw from "react-canvas-draw";
 import { Alert, Button, Divider, Modal } from "react-daisyui";
-import { GiConsoleController, GiPointySword } from "react-icons/gi"
+import { GiPointySword } from "react-icons/gi"
 import { FetchItems, FetchQuestionData, LogData, timeFormat, ItemBeingUsed, GetHint } from "./helper";
 import * as BsIcon from "react-icons/bs"
-import * as FcIcon from "react-icons/fc"
+import PropTypes from "prop-types"
+import {ENDPOINT} from "../../../config"
 
 function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
   const userCanva = useRef(null);
@@ -13,12 +14,21 @@ function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
   const [itemModal, setItemModal] = useState(false)
   const [item, setItem] = useState();
   const [hint, setHint] = useState();
-
+  const [questionModal, setQuestionModal] = useState(false)
+  const [timeoutModal, setTimeoutModal] = useState(false)
   useEffect(() => {
     if (CURRENT_QUESTION) {
+      setTimeoutModal(false)
       fetchQuestionData(CURRENT_QUESTION);
     }
+    if (COUNTDOWN_UNTIL === 0) {
+      LogData(user.user_id, CURRENT_QUESTION, userCanva.current.getDataURL())
+    }
   }, [CURRENT_QUESTION, COUNTDOWN_UNTIL]);
+
+  useEffect(()=>{
+    if(COUNTDOWN_UNTIL === 0) setTimeoutModal(true)
+  }, [COUNTDOWN_UNTIL])
 
   useEffect(()=>{
     if(user.subrole==="final") fetchItem();
@@ -50,10 +60,10 @@ function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
 
   const itemExecute = async (item_id) =>{
     try{
-      let query = await ItemBeingUsed(user.user_id, item_id, CURRENT_QUESTION)
+      await ItemBeingUsed(user.user_id, item_id, CURRENT_QUESTION)
       fetchItem();
     }catch(err){
-    cobsole.log(err)
+    console.log(err)
     }
   }
 
@@ -63,14 +73,14 @@ function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
    return result[0].item_used
   }
 
-  const filterEffect = () =>{
-    if(item){
-      let result = item.filter((data)=>{return data.item_used === 1})
-      return result
-    }
+  // const filterEffect = () =>{
+  //   if(item){
+  //     let result = item.filter((data)=>{return data.item_used === 1})
+  //     if(result[0].executed_at === CURRENT_QUESTION) return result
+  //   }
+  // }
   }
-  }
-  if (CURRENT_QUESTION && COUNTDOWN_UNTIL)
+  if (CURRENT_QUESTION)
     return (
       <>
       <div className="m-3 h-"> 
@@ -78,6 +88,7 @@ function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
       <Alert innerClassName="flex justify-between">
           <div className="flex gap-2 items-center">
           <BsIcon.BsPerson/> {user.owner_name}
+          <Button color="info" size="md" startIcon = {<BsIcon.BsQuestion/>} onClick={()=>{setQuestionModal(!questionModal)}}>อ่านคำถาม</Button>
           {user.subrole==="final" && <Button color="warning" size = "md" startIcon={<GiPointySword/>} onClick={()=>{fetchItem(); setItemModal(true)}}>ไอเทม</Button> }
           </div>
           <p>{timeFormat(COUNTDOWN_UNTIL)}</p>
@@ -126,8 +137,28 @@ function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
       }
       </Modal>
       </>}
+      <Modal open={questionModal} onClickBackdrop={()=>{setQuestionModal(!questionModal)}}>
+        <Modal.Header>
+          คำถามข้อปัจจุบัน {question && question.type} : {question && question.score} คะแนน : ระดับ {question && question.level}
+        </Modal.Header>
+        <Modal.Body>
+          {question && question.text}
+          {question && question.pics && <img src={`${ENDPOINT}/static/${question && question.pics}`}></img>}
+        </Modal.Body>
+      </Modal>
+      <Modal open={timeoutModal}>
+        <Modal.Body>
+          <p className="text-error text-4xl">หมดเวลา</p>
+          <p>ระบบกำลังบันทึกคำตอบล่าสุด</p>
+        </Modal.Body>
+      </Modal>
       </>
     );
+}
+
+AnswerQuestion.propTypes = {
+  COUNTDOWN_UNTIL: PropTypes.number,
+  CURRENT_QUESTION: PropTypes.string
 }
 
 export default AnswerQuestion;

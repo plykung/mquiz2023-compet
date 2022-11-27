@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { FetchQuestionData } from './helper';
 import { timeFormat } from '../../Competition/Components/Answer/helper';
 import * as BsIcon from "react-icons/bs"
+import { ENDPOINT } from '../../config';
+import {PropTypes} from "prop-types"
 
 function StreamerCountdown({TIME_LEFT, CURRENT_QUESTION}) {
     const [question, setQuestion] = useState()
@@ -27,11 +29,24 @@ function StreamerCountdown({TIME_LEFT, CURRENT_QUESTION}) {
         </div>
         <div className="p-5 rounded-lg bg-white bg-opacity-70 shadow-2xl w-9/12 animate__animated animate__fadeInUp" style={{animationDelay: "500ms"}}>
             {question && <>
-                <p className="text-2xl">{question.text}</p>
+                <p className="text-2xl">{question.text.split("<br/>").map((i)=>{
+                          return(
+                            <>
+                            <span>{i}</span>
+                            <br/>
+                            </>
+                          )
+                        })}</p>
+                {question.pics && <img src={`${ENDPOINT}/static/${question.pics}`}></img>}
             </>}
         </div>
       </div>
     );
+}
+
+StreamerCountdown.propTypes = {
+    TIME_LEFT: PropTypes.number,
+    CURRENT_QUESTION: PropTypes.string
 }
 
 export default StreamerCountdown;

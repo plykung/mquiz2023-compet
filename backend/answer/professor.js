@@ -37,10 +37,24 @@ router.get("/summary", async (req,res)=>{
 })
 
 router.get("/:question_id", async (req,res)=>{
-    let {question_id} = req.body
+    let {question_id} = req.params
     try{
-        let score = await db.query("SELECT users.user_id, users.owner_name, SUM(answer.score) AS score FROM answer JOIN users ON users.user_id = answer.user_id WHERE answer.question_id = ?", [question_id])
-        res.status(200).json({status: "success", score: score})
+        let q_data = await db.query("SELECT correct_answer FROM questions WHERE id = ?", [question_id])
+        let score = await db.query("SELECT users.user_id, users.owner_name, answer.score AS score FROM answer JOIN users ON users.user_id = answer.user_id WHERE answer.question_id = ?", [question_id])
+        res.status(200).json({success: true, data: {question_data: q_data, score: score}})
+    }catch(err){
+        console.log(err)
+        res.status(500).json({success: false, data: err})
+    }
+})
+
+router.get("/:question_id/:user_id", async (req,res)=>{
+    let {question_id, user_id} = req.params
+    if(!question_id) res.status(400).json({success: false, reason: "ไม่ได้รับ question_id เป็น request paramater"})
+    if(!user_id) res.status(400).json({success: false, reason: "ไม่ได้รับ user_id เป็น request paramater"})
+    try{
+        let score = await db.query("SELECT users.user_id, users.owner_name, answer.score AS score FROM answer JOIN users ON users.user_id = answer.user_id WHERE answer.question_id = ? AND users.user_id = ? LIMIT 1", [question_id, user_id])
+        res.status(200).json({status: "success", data: score[0]})
     }catch(err){
         res.status(500).json({error: true, detail: err})
     }

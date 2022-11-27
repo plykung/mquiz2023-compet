@@ -3,12 +3,15 @@ import { Alert, Button, Card, Divider, Modal } from 'react-daisyui';
 import { SocketConnection } from '../Helpers/AdminMainPage';
 import { FetchAllQuestion } from './helper';
 
-function AdminMainPage(props) {
-    const [isConnected, gameStatus, questionOwner, loop, emitValue, emitQuestionValue, resetGameState, fetchGameState, emitLoop, emitStart, emitQuestion] = SocketConnection()
+function AdminMainPage() {
+    const [, gameStatus, questionOwner, loop, emitValue, emitQuestionValue, resetGameState, fetchGameState, emitLoop, emitStart, emitQuestion] = SocketConnection()
     const [currentButton, setCurrentButton] = useState()
     const [currentLoop, setCurrentLoop] = useState()
     const [allQuestion, setAllQuestion] = useState()
     const [open, setOpen] = useState(false)
+    const loop_A = ["semi01","semi02","semi03","semi04","semi05","semi06","semi07","semi08"]
+    const loop_B = ["semi09","semi10","semi11","semi12","semi13","semi14","semi15","semi16"]
+    const loop_C = ["semi17","semi18","semi19","semi20","semi21","semi22","semi23","semi24"]
 
     useEffect(()=>{
         FetchAllQuestion().then((data)=>{setAllQuestion(data)})
@@ -28,6 +31,7 @@ function AdminMainPage(props) {
                             <Button color="primary" size="sm" variant="outline" onClick={()=>{emitValue({role: "admin", CURRENT_GAME_STATUS: "AWAIT_MC"})}}>รอปล่อยคำถาม</Button>
                             <Button color="error" size="sm" variant="outline" onClick={()=>{emitValue({role: "admin", CURRENT_GAME_STATUS: "START_QUESTION"}); emitStart();}}>ปล่อยคำถาม</Button>
                             <Button color="warning" size="sm" variant="outline" onClick={()=>{emitValue({role: "admin", CURRENT_GAME_STATUS: "AWAIT_SCORE"})}}>รอคะแนน</Button>
+                            <Button color="warning" size="sm" variant="outline" onClick={()=>{emitValue({role: "admin", CURRENT_GAME_STATUS: "SHOW_SUMMARY"})}}>ผลการเล่น</Button>
                             <Button color="warning" size="sm" variant="outline" onClick={()=>{emitValue({role: "admin", CURRENT_GAME_STATUS: "REVEAL_SCORE"})}}>เฉลยคะแนน</Button>
                             <Button color="warning" size="sm" variant="outline" onClick={()=>{fetchGameState()}}>เรียกสถานะจากฐานข้อมูล</Button>
                             <Divider>คำสั่งพิเศษ</Divider>
@@ -41,14 +45,13 @@ function AdminMainPage(props) {
                         <Card.Body>
                             <Alert innerClassName="text-xs">เจ้าของปัจจุบัน: {questionOwner}</Alert>
                             <Card.Title>เลือกทีมเจ้าของคำถาม</Card.Title>
-                            <Button color="warning" name="semi01" size="sm" variant={currentButton === "semi01"? "" : "outline"} onClick={(e)=>{setCurrentButton(e.target.name); emitQuestionValue({role: "admin", CURRENT_QUESTION_OWNER: "semi01"})}}>SEMI 01</Button>
-                            <Button color="warning" name="semi02" size="sm" variant={currentButton === "semi02"? "" : "outline"} onClick={(e)=>{setCurrentButton(e.target.name); emitQuestionValue({role: "admin", CURRENT_QUESTION_OWNER: "semi02"})}}>SEMI 02</Button>
-                            <Button color="warning" name="semi03" size="sm" variant={currentButton === "semi03"? "" : "outline"} onClick={(e)=>{setCurrentButton(e.target.name); emitQuestionValue({role: "admin", CURRENT_QUESTION_OWNER: "semi03"})}}>SEMI 03</Button>
-                            <Button color="warning" name="semi04" size="sm" variant={currentButton === "semi04"? "" : "outline"} onClick={(e)=>{setCurrentButton(e.target.name); emitQuestionValue({role: "admin", CURRENT_QUESTION_OWNER: "semi04"})}}>SEMI 04</Button>
-                            <Button color="warning" name="semi05" size="sm" variant={currentButton === "semi05"? "" : "outline"} onClick={(e)=>{setCurrentButton(e.target.name); emitQuestionValue({role: "admin", CURRENT_QUESTION_OWNER: "semi05"})}}>SEMI 05</Button>
-                            <Button color="warning" name="semi06" size="sm" variant={currentButton === "semi06"? "" : "outline"} onClick={(e)=>{setCurrentButton(e.target.name); emitQuestionValue({role: "admin", CURRENT_QUESTION_OWNER: "semi06"})}}>SEMI 06</Button>
-                            <Button color="warning" name="semi07" size="sm" variant={currentButton === "semi07"? "" : "outline"} onClick={(e)=>{setCurrentButton(e.target.name); emitQuestionValue({role: "admin", CURRENT_QUESTION_OWNER: "semi07"})}}>SEMI 07</Button>
-                            <Button color="warning" name="semi08" size="sm" variant={currentButton === "semi08"? "" : "outline"} onClick={(e)=>{setCurrentButton(e.target.name); emitQuestionValue({role: "admin", CURRENT_QUESTION_OWNER: "semi08"})}}>SEMI 08</Button>
+                            {currentLoop === "A" ? loop_A.map((data,index)=>{
+                            return <Button key={index} color="warning" name={data} size="sm" variant={currentButton === data ? "" : "outline"} onClick={(e)=>{setCurrentButton(e.target.name); emitQuestionValue({role: "admin", CURRENT_QUESTION_OWNER: data})}}>{data}</Button>
+                            }): currentLoop === "B" ? loop_B.map((data,index)=>{
+                            return <Button key={index} color="warning" name={data} size="sm" variant={currentButton === data ? "" : "outline"} onClick={(e)=>{setCurrentButton(e.target.name); emitQuestionValue({role: "admin", CURRENT_QUESTION_OWNER: data})}}>{data}</Button>
+                            }): currentLoop === "C" ? loop_C.map((data,index)=>{
+                                return <Button key={index} color="warning" name={data} size="sm" variant={currentButton === data ? "" : "outline"} onClick={(e)=>{setCurrentButton(e.target.name); emitQuestionValue({role: "admin", CURRENT_QUESTION_OWNER: data})}}>{data}</Button>
+                            }): null}
                         </Card.Body>
                     </Card>
                 </div>
@@ -73,7 +76,7 @@ function AdminMainPage(props) {
                 <Modal.Body className="grid gap-2">
                     {
                         allQuestion && allQuestion.map((data)=>{
-                           return <Button color="warning" size="sm" variant="outline" className="w-full" onClick={()=>{emitQuestion(data.id)}}>{data.id}</Button>
+                           return <Button color="warning" size="sm" variant="outline" className="w-full" key={data.id} onClick={()=>{emitQuestion(data.id)}}>{data.id}</Button>
                         })
                     }
                 </Modal.Body>

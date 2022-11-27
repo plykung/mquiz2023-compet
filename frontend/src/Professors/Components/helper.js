@@ -32,7 +32,6 @@ const FetchUserAnswer = async (question_id) => {
     console.log(question_id)
     try{
         let answers = await axios.get(`${ENDPOINT}/answer/score/answers/${question_id}/`)
-        console.log(answers)
         return answers.data.data
     }catch(err){
         console.log(err)
@@ -58,4 +57,13 @@ const GetUserItems = async (q_id) => {
     }
 }
 
-export {timeFormat, FetchQuestionData, FetchUserAnswer, UpdateScore, GetUserItems}
+const GetUserScore = async (q_id) => {
+    try{
+        let data = await axios.get(`${ENDPOINT}/answer/score/${q_id}/`)
+        return data.data.data.score
+    }catch(err){
+        console.error(err)
+    }
+}
+
+export {timeFormat, FetchQuestionData, FetchUserAnswer, UpdateScore, GetUserItems, GetUserScore}

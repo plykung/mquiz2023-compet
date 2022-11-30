@@ -39,7 +39,7 @@ router.get("/summary", async (req,res)=>{
 router.get("/:question_id", async (req,res)=>{
     let {question_id} = req.params
     try{
-        let q_data = await db.query("SELECT correct_answer FROM questions WHERE id = ?", [question_id])
+        let q_data = await db.query("SELECT correct_answer, correct_answer_description, correct_answer_photo FROM questions WHERE id = ?", [question_id])
         let score = await db.query("SELECT users.user_id, users.owner_name, answer.score AS score FROM answer JOIN users ON users.user_id = answer.user_id WHERE answer.question_id = ?", [question_id])
         res.status(200).json({success: true, data: {question_data: q_data, score: score}})
     }catch(err){

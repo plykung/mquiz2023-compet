@@ -47,7 +47,7 @@ const FetchItems = async (user_id)=>{
 
 const ItemBeingUsed = async (user_id, item_id, CURRENT_QUESTION) =>{
     try{
-        let execute = await axios.post(`${ENDPOINT}/items/`, {user_id: user_id, item_id: item_id, executed_at: CURRENT_QUESTION})
+        await axios.post(`${ENDPOINT}/items/`, {user_id: user_id, item_id: item_id, executed_at: CURRENT_QUESTION})
     }catch(err){
         console.error(err)
     }

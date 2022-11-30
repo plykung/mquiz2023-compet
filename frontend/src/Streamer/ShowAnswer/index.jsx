@@ -1,8 +1,9 @@
 import { PropTypes } from "prop-types";
 import React, { useState, useEffect } from "react";
-import { Badge, Card } from "react-daisyui";
+import { Badge, Card, Divider } from "react-daisyui";
 import { FetchAnswer, FetchScore } from "./helper";
 import * as BsIcon from "react-icons/bs"
+import { ENDPOINT } from "../../config";
 function ShowAnswer({ CURRENT_QUESTION, QUESTION_OWNER, CURRENT_STATUS }) {
   const [answer, setAnswer] = useState(false);
   const [score, setScore] = useState()
@@ -41,14 +42,24 @@ function ShowAnswer({ CURRENT_QUESTION, QUESTION_OWNER, CURRENT_STATUS }) {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-white-blur gap-5">
       <div className="grid rounded-lg bg-white shadow-2xl bg-opacity-70 text-center text-3xl w-11/12 animate__animated animate__fadeInUp p-5">
-        {CURRENT_STATUS === "SHOW_SUMMARY" ? <p className="animate__animated animate__fadeInUp">คำตอบที่ถูกต้อง<br/><strong>{score && score.question_data[0].correct_answer.split("<br/>").map((i)=>{
+        {CURRENT_STATUS === "SHOW_SUMMARY" ? <><p className="animate__animated animate__fadeInUp">คำตอบที่ถูกต้อง<br/><strong>{score && score.question_data[0].correct_answer.split("<br/>").map((i)=>{
                           return(
                             <>
                             <span>{i}</span>
                             <br/>
                             </>
                           )
-                        })}</strong></p> :"คำตอบของผู้เข้าแข่งขัน"}
+                        })}</strong>
+                        </p>
+                        <p className="text-xl animate__animated animate__fadeInUp">
+                        <Divider className="animate__animated animate__fadeInUp"><strong>คำอธิบาย</strong></Divider>
+                          {score && score.question_data[0].correct_answer_description?.split("<br/>").map((i)=>{return(<><span>{i}</span> <br/></>)
+                        })}
+                        </p>
+                        <div className="animate__animated animate__fadeInUp flex justify-center">
+                        {score?.question_data[0].correct_answer_photo && <img className="h-80" src={`${ENDPOINT}/static/${score?.question_data[0].correct_answer_photo}`}/>}
+                        </div>
+                        </> :"คำตอบของผู้เข้าแข่งขัน"}
       </div>
       <div className="grid grid-cols-4 gap-4">
         {answer &&

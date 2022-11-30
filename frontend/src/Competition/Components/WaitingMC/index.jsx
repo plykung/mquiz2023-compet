@@ -1,8 +1,9 @@
 import React, {useState , useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import {Card, Button, Divider} from "react-daisyui"
+import {Card, Divider} from "react-daisyui"
 import * as BsIcon from "react-icons/bs"
 import { FetchQuestionData } from "./helper";
+import PropTypes from "prop-types"
 
 function WaitingMC({connection, CURRENT_QUESTION}) {
   const [user, setUser] = useState();
@@ -35,7 +36,7 @@ function WaitingMC({connection, CURRENT_QUESTION}) {
           <p className="text-md"></p>
           <Card className="shadow-xl">
             <Card.Body>
-              <p className="text-3xl">{question.type} ระดับ {question.level}</p>
+              <p className="text-3xl">{question.type} {question.level && "ระดับ"} {question.level}</p>
               <p className="text-3xl">{question.score} คะแนน</p>
               <p className="text-3xl">{question.time} วินาที</p>
               <Divider>USER INFORMATION</Divider>
@@ -65,6 +66,11 @@ function WaitingMC({connection, CURRENT_QUESTION}) {
       </div>
     </div>
   );
+}
+
+WaitingMC.propTypes = {
+  connection: PropTypes.bool.isRequired,
+  CURRENT_QUESTION: PropTypes.string.isRequired
 }
 
 export default WaitingMC;

@@ -30,6 +30,13 @@ function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
     if(COUNTDOWN_UNTIL === 0) setTimeoutModal(true)
   }, [COUNTDOWN_UNTIL])
 
+  const filterEffect = () =>{
+    if(item){
+      let result = item.filter((data)=>{return data.item_used === 1})
+      if(result[0]?.executed_at === CURRENT_QUESTION) return result
+    }
+  }
+
   useEffect(()=>{
     if(user.subrole==="final") fetchItem();
   }, [])
@@ -42,7 +49,8 @@ function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
 
   useEffect(()=>{
     if(item){
-      if(filterUsed("hint")){
+      if(filterEffect("hint")){
+        console.log(filterEffect("hint"))
         getHint()
       }
     }
@@ -73,12 +81,6 @@ function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
    return result[0].item_used
   }
 
-  // const filterEffect = () =>{
-  //   if(item){
-  //     let result = item.filter((data)=>{return data.item_used === 1})
-  //     if(result[0].executed_at === CURRENT_QUESTION) return result
-  //   }
-  // }
   }
   if (CURRENT_QUESTION)
     return (
@@ -142,7 +144,14 @@ function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
           คำถามข้อปัจจุบัน {question && question.type} : {question && question.score} คะแนน : ระดับ {question && question.level}
         </Modal.Header>
         <Modal.Body>
-          {question && question.text}
+          {question && question.text.split("<br/>").map((i)=>{
+                          return(
+                            <>
+                            <span>{i}</span>
+                            <br/>
+                            </>
+                          )
+                        })}
           {question && question.pics && <img src={`${ENDPOINT}/static/${question && question.pics}`}></img>}
         </Modal.Body>
       </Modal>

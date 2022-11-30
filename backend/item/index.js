@@ -31,13 +31,14 @@ router.get("/executed/:question_id", async (req,res)=>{
         let teamWithStreak = []
         let streakCriteriaIsMet
         if(executedStreak.length > 0) streakCriteriaIsMet = await db.query("SELECT DISTINCT(user_id) AS user_id, questions.id, SUM(answer.score) AS score FROM answer JOIN questions ON questions.id = answer.question_id WHERE user_id IN (?) AND questions.sequence <= ? GROUP BY user_id", [teamExecutedStreak, sequence])
-        for(let i = 0; i<streakCriteriaIsMet.length; i++){
+        for(let i = 0; i<streakCriteriaIsMet?.length; i++){
             if(parseInt(streakCriteriaIsMet[i].score) >= sequence*25.00){
                 teamWithStreak.push(streakCriteriaIsMet[i].user_id)
             }
         }
         res.status(200).json({items: items, streak_active: teamWithStreak})
     }catch(err){
+        console.log(err)
         res.status(500).json({data: null, error: err})
     }
 }, [])

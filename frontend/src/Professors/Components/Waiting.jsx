@@ -14,6 +14,7 @@ function ProfessorChecking() {
     const [streak, setStreak] = useState()
     const [score, setScore] = useState()
     const ref = useRef()
+    const user = JSON.parse(localStorage.getItem("user"))
     
     useEffect(()=>{
         if(currentQuestionSelect) {
@@ -110,7 +111,7 @@ function ProfessorChecking() {
                             <p>คะแนนในระบบ: {filterScore(data.user_id) ? filterScore(data.user_id) : "ERROR CONTACT IT"}</p>
                             <div className="flex justify-around">
                             {
-                                data.subrole === "final"
+                                data.subrole === "final" && user.role === "admin"
                                 ? <div>
                                 <p className="text-error">ACTIVE ITEMS</p> {
                                     filterUsedItem(data.user_id) && filterUsedItem(data.user_id).map((data,index)=>{
@@ -120,12 +121,12 @@ function ProfessorChecking() {
                                     <Form onSubmit={(e)=>{e.preventDefault(); submitScore(data.user_id, e.target.value.value)}}>
                                     <InputGroup>
                                         <span>คะแนน</span>
-                                        <Input type="text" name="value" placeholder="กรอกคะแนน" ref={ref} bordered/>
-                                    <Button color="success">บันทึก</Button>
+                                        <Input type="text" name="value" placeholder="กรอกคะแนน" ref={ref} bordered onBlur={(e)=>{submitScore(data.user_id, e.target.value)}}/>
                                     </InputGroup>
                                     </Form>
                                 </div>
                                 :
+                             user?.role === "admin" &&
                                 <>
                             <Button size="md" disabled={data.user_id !== questionOwner ? isOwnerWrong ? false : true : false} onClick={data.user_id === questionOwner ? ()=>{submitScore(data.user_id,question.score); setIsOwnerWrong(false)} : ()=>{submitScore(data.user_id,question.score/2)}} variant="success" startIcon={<BsIcon.BsCheckLg/>}>{data.user_id === questionOwner ? question.score : question.score/2} คะแนน</Button>
                             <Button size="md" disabled={data.user_id !== questionOwner ? isOwnerWrong ? false : true : false} onClick={()=>{submitScore(data.user_id,0); data.user_id === questionOwner ? setIsOwnerWrong(true) : null}} variant="error" startIcon={<BsIcon.BsXLg/>}>0 คะแนน</Button>

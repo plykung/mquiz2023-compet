@@ -10,7 +10,7 @@ if (variable === "uninet") {
   SOCKET_ENDPOINT = "http://10.83.217.233:3000";
 }
 if (variable === "production") {
-  ENDPOINT = "http://10.83.216.111:3000";
-  SOCKET_ENDPOINT = "http://10.83.216.111:3000";
+  ENDPOINT = "http://10.83.218.1:3000";
+  SOCKET_ENDPOINT = "http://10.83.218.1:3000";
 }
 export { ENDPOINT, SOCKET_ENDPOINT };

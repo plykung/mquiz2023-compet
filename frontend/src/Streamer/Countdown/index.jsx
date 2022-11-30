@@ -36,8 +36,9 @@ function StreamerCountdown({TIME_LEFT, CURRENT_QUESTION}) {
                             <br/>
                             </>
                           )
-                        })}</p>
+                        })}</p><div className="flex justify-center">
                 {question.pics && <img src={`${ENDPOINT}/static/${question.pics}`}></img>}
+                        </div>
             </>}
         </div>
       </div>

@@ -29,3 +29,4 @@ Software in this reprository is developed according to competition rule which is
 - Hint, show only once
 - Save upon last second
 - หลังจากตรวจข้อสอบเสร็จ ให้แสดงหน้าว่าใครตอบถูกหรือผิด พร้อมแสดงคำตอบ ก่อนแสดงคะแนนรวมทั้งหมด
+** THSESE IMPROVEMENTS HAVE BEEN DONE AND TESTED **

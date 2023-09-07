@@ -1,4 +1,4 @@
-let variable = "production";
+let variable = "local";
 let ENDPOINT;
 let SOCKET_ENDPOINT;
 if (variable === "local") {

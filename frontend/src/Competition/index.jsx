@@ -28,13 +28,16 @@ function Competition() {
       />
     );
   if (CURRENT_GAME_STATUS === "AWAIT_MC")
-    if (CURRENT_QUESTION_SELECTED)
+    if (CURRENT_QUESTION_SELECTED) {
       return (
         <WaitingMC
           connection={isConnected}
           CURRENT_QUESTION={CURRENT_QUESTION_SELECTED}
         />
       );
+    } else {
+      return <WaitingScreen connection={isConnected} />;
+    }
   if (CURRENT_GAME_STATUS === "START_QUESTION")
     return (
       <AnswerQuestion

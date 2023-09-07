@@ -4,13 +4,13 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 const cors = require("cors");
 const app = express();
-app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
 // SOCKET LOGIC
 var http = require("http").Server(app);
 const socket = require("./socket")
 const socketHandler = socket.socketApi
-socketHandler.io.attach(http, {cors: {origin: "*"}})
+socketHandler.io.attach(http, { cors: { origin: "*" } })
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://127.0.0.1:5173", "http://10.83.217.233:5173", "http://10.83.218.1:5173"],

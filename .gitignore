@@ -28,3 +28,8 @@ backend/static
 # node modules of each one
 backend/node_modules/
 frontend/node_modules/
+
+# env
+backend/*.env*
+frontend/*.env*
+backend/.env

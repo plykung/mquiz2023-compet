@@ -42,7 +42,7 @@ function ShowAnswer({ CURRENT_QUESTION, QUESTION_OWNER, CURRENT_STATUS }) {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-white-blur gap-5">
       <div className="grid rounded-lg bg-white text-gray-700 shadow-2xl bg-opacity-100 text-center text-3xl w-11/12 animate__animated animate__fadeInUp p-5">
-        {CURRENT_STATUS === "SHOW_SUMMARY" ? <><p className="animate__animated animate__fadeInUp">คำตอบที่ถูกต้อง<br /><strong>{score && score.question_data[0].correct_answer.split("<br/>").map((i) => {
+        {CURRENT_STATUS === "SHOW_SUMMARY" ? <><p className="animate__animated animate__fadeInUp">คำตอบที่ถูกต้อง<br /><strong>{score && score?.question_data[0].correct_answer.split("<br/>").map((i) => {
           return (
             <>
               <span>{i}</span>
@@ -51,12 +51,18 @@ function ShowAnswer({ CURRENT_QUESTION, QUESTION_OWNER, CURRENT_STATUS }) {
           )
         })}</strong>
         </p>
-          <p className="text-xl animate__animated animate__fadeInUp">
-            <Divider className="animate__animated animate__fadeInUp"><strong>คำอธิบาย</strong></Divider>
-            {score && score.question_data[0].correct_answer_description?.split("<br/>").map((i) => {
-              return (<><span>{i}</span> <br /></>)
-            })}
-          </p>
+
+          {
+            (score?.question_data[0].correct_answer_description) && (
+              <p className="text-xl animate__animated animate__fadeInUp">
+                <Divider className="animate__animated animate__fadeInUp"><strong>คำอธิบาย</strong></Divider>
+                {score && score?.question_data[0].correct_answer_description?.split("<br/>").map((i) => {
+                  return (<><span>{i}</span> <br /></>)
+                })}
+              </p>
+            )
+          }
+
           <div className="animate__animated animate__fadeInUp flex justify-center">
             {score?.question_data[0].correct_answer_photo && <img className="h-80" src={`${ENDPOINT}/static/${score?.question_data[0].correct_answer_photo}`} />}
           </div>

@@ -13,9 +13,9 @@ function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
   const userCanva = useRef(null);
   const user = JSON.parse(localStorage.getItem("user"))
   const [question, setQuestion] = useState();
-  const [itemModal, setItemModal] = useState(false)
+  // const [itemModal, setItemModal] = useState(false)
   const [item, setItem] = useState();
-  const [hint, setHint] = useState();
+  // const [hint, setHint] = useState();
   const [questionModal, setQuestionModal] = useState(false)
   const [timeoutModal, setTimeoutModal] = useState(false)
   useEffect(() => {
@@ -29,7 +29,7 @@ function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
   }, [CURRENT_QUESTION, COUNTDOWN_UNTIL]);
 
   useEffect(() => {
-    if (COUNTDOWN_UNTIL === 0) setTimeoutModal(true)
+    if (COUNTDOWN_UNTIL <= 0) setTimeoutModal(true)
   }, [COUNTDOWN_UNTIL])
 
   const filterEffect = () => {
@@ -68,29 +68,29 @@ function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
     setItem(query)
   }
 
-  const itemExecute = async (item_id) => {
-    try {
-      await ItemBeingUsed(user.user_id, item_id, CURRENT_QUESTION)
-      fetchItem();
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // const itemExecute = async (item_id) => {
+  //   try {
+  //     await ItemBeingUsed(user.user_id, item_id, CURRENT_QUESTION)
+  //     fetchItem();
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
-  const filterUsed = (item_id) => {
-    if (item) {
-      let result = item.filter((data) => { return data.item_id === item_id })
-      return result[0].item_used
-    }
+  // const filterUsed = (item_id) => {
+  //   if (item) {
+  //     let result = item.filter((data) => { return data.item_id === item_id })
+  //     return result[0].item_used
+  //   }
+  // }
 
-  }
   if (CURRENT_QUESTION)
     return (
       <>
         <div className="m-3 h-">
           <div className="my-2">
             <Alert innerClassName="flex justify-between">
-              <div className="flex gap-2 items-center">
+              <div className="flex gap-5 items-center">
                 <BsIcon.BsPerson /> {user.owner_name}
                 <Button color="info" size="md" startIcon={<BsIcon.BsQuestion />} onClick={() => { setQuestionModal(!questionModal) }}>อ่านคำถาม</Button>
                 {/* {user.subrole === "final" && <Button color="warning" size="md" startIcon={<GiPointySword />} onClick={() => { fetchItem(); setItemModal(true) }}>ไอเทม</Button>} */}
@@ -144,19 +144,33 @@ function AnswerQuestion({ COUNTDOWN_UNTIL, CURRENT_QUESTION }) {
         </Modal>
         </>} */}
         <Modal open={questionModal} onClickBackdrop={() => { setQuestionModal(!questionModal) }}>
+          <Button size="sm" color="ghost" shape="circle" className="absolute right-5 top-5" onClick={() => { setQuestionModal(!questionModal) }}>
+            x
+          </Button>
           <Modal.Header>
-            คำถามข้อปัจจุบัน {question && question.type} : {question && question.score} คะแนน : ระดับ {question && question.level}
+            คำถาม {(question?.type) && question?.type}{(question?.score) && ` : ${question?.score} คะแนน`}{(question?.level) && ` : ระดับ ${question?.level}`}
           </Modal.Header>
           <Modal.Body>
-            {question && question.text.split("<br/>").map((i) => {
-              return (
-                <>
-                  <span>{i}</span>
-                  <br />
-                </>
-              )
-            })}
-            {question && question.pics && <img src={`${ENDPOINT}/static/${question && question.pics}`}></img>}
+
+            {(question?.text) && (<div className="pb-3">
+              {
+                question?.text.split("<br/>").map((i) => {
+                  return (
+                    <>
+                      <span>{i}</span>
+                      <br />
+                    </>
+                  )
+                })
+              }
+            </div>)}
+
+            {
+              (question?.pics) && (<div className="pb-3">
+                <img src={`${ENDPOINT}/static/${question && question?.pics}`}></img>
+              </div>)
+            }
+
           </Modal.Body>
         </Modal>
         <Modal open={timeoutModal}>

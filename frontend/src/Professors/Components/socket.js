@@ -10,30 +10,33 @@ function SocketConnection() {
   const [loop, setLoop] = useState(null)
 
   useEffect(() => {
-    socket.on("connect", ()=>{
-        setIsConnected(true)
+    socket.on("connect", () => {
+      setIsConnected(true)
     })
-    socket.on("disconnect", ()=>{
-        setIsConnected(false)
+    socket.on("disconnect", () => {
+      setIsConnected(false)
     })
-    socket.on("CURRENT_GAME_STATUS", (data)=>{
-        setGameStatus(data)
+    socket.on("CURRENT_GAME_STATUS", (data) => {
+      setGameStatus(data)
     })
-    socket.on("CURRENT_QUESTION_OWNER", (data)=>{
+    socket.on("CURRENT_QUESTION_OWNER", (data) => {
       setQuestionOwner(data)
     })
-    socket.on("CURRENT_LOOP", (data)=>{
+    socket.on("CURRENT_LOOP", (data) => {
       setLoop(data)
     })
-    socket.on("CURRENT_QUESTION_SELECTED", (data)=>{set_CURRENT_QUESTION_SELECTED(data)});
-    socket.on("COUNTDOWN_UNTIL", (data)=>{set_COUNTDOWN_UNTIL(data)})
-    return () =>{
-        socket.off("connect")
-        socket.off("disconnect")
+    socket.on("CURRENT_QUESTION_SELECTED", (data) => {
+      set_CURRENT_QUESTION_SELECTED(data)
+    });
+
+    socket.on("COUNTDOWN_UNTIL", (data) => { set_COUNTDOWN_UNTIL(data) })
+    return () => {
+      socket.off("connect")
+      socket.off("disconnect")
     }
   }, [isConnected, gameStatus]);
 
-  const emitValue = (status) =>{
+  const emitValue = (status) => {
     socket.emit("CURRENT_GAME_STATUS", status)
   }
 

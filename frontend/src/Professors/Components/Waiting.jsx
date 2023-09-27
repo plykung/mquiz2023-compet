@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Alert, Badge, Button, Card, Form, Input, InputGroup } from 'react-daisyui';
+import { Alert, Badge, Button, Card, Divider, Form, Input, InputGroup } from 'react-daisyui';
 import toast, { Toaster } from "react-hot-toast"
 import * as BsIcon from 'react-icons/bs';
 import { FetchQuestionData, FetchUserAnswer, GetUserItems, GetUserScore, timeFormat, UpdateScore, } from './helper';
 import { SocketConnection } from './socket';
+import { ENDPOINT } from '../../config';
 
 function ProfessorChecking() {
     const [, gameStatus, questionOwner, loop, currentQuestionSelect, countdownUntil,] = SocketConnection()
@@ -97,8 +98,30 @@ function ProfessorChecking() {
                     <Card.Title>
                         หมวด {question && question.type} - {question && question.score} คะแนน - {question && question.time} วินาที
                     </Card.Title>
-                    <p>{question && question.text}</p>
+
+                    {(question?.text) && (<div className="pb-3">
+                        {
+                            question?.text.split("<br/>").map((i) => {
+                                return (
+                                    <>
+                                        <span>{i}</span>
+                                        <br />
+                                    </>
+                                )
+                            })
+                        }
+                    </div>)}
+
+                    {
+                        (question?.pics) && (<div className="pb-3">
+                            <img src={`${ENDPOINT}/static/${question && question?.pics}`} ></img>
+                        </div>)
+                    }
+                    <Divider />
+                    <p><b>เฉลยจากระบบ: </b> {(question?.correct_answer) && question?.correct_answer}</p>
+                    <p><b>คำอธิบายเฉลย: </b> {(question?.correct_answer_description) && question?.correct_answer_description}</p>
                 </Card.Body>
+                {console.log('data:', question)}
             </Card>
             {gameStatus === "AWAIT_SCORE" &&
                 <div className="grid grid-cols-2 gap-2">
@@ -108,22 +131,24 @@ function ProfessorChecking() {
                                 <Card.Body>
                                     <Card.Title>{data.owner_name} {data.user_id === questionOwner ? (<Badge size="lg" color="warning">ทีมเจ้าของคำถาม</Badge>) : null}</Card.Title>
                                     <img src={data.answer}></img>
-                                    <p>คะแนนในระบบ: {filterScore(data.user_id) ? filterScore(data.user_id) : "ERROR CONTACT IT"}</p>
+                                    <p>คะแนนในระบบ: {filterScore(data.user_id) ? filterScore(data.user_id) : "No Data"}</p>
                                     <div className="flex justify-around">
                                         {
                                             data.subrole === "final" && user.role === "admin"
                                                 ? <div>
-                                                    <p className="text-error">ACTIVE ITEMS</p> {
+                                                    {/* <p className="text-error">ACTIVE ITEMS</p> {
                                                         filterUsedItem(data.user_id) && filterUsedItem(data.user_id).map((data, index) => {
                                                             return <p key={index}>- {data.item_id}</p>
                                                         })
-                                                    }{streak && streak.includes(data.user_id) ? <Badge color="error">ทีมนี้มี STREAK!</Badge> : null}
+                                                    }{streak && streak.includes(data.user_id) ? <Badge color="error">ทีมนี้มี STREAK!</Badge> : null} */}
                                                     <Form onSubmit={(e) => { e.preventDefault(); submitScore(data.user_id, e.target.value.value) }}>
                                                         <InputGroup>
                                                             <span>คะแนน</span>
                                                             <Input type="text" name="value" placeholder="กรอกคะแนน" ref={ref} bordered onBlur={(e) => { submitScore(data.user_id, e.target.value) }} />
-                                                            <Button>Save</Button>
+                                                            <span>&nbsp;เต็ม&nbsp;{question ? question?.score : '0'}</span>
+
                                                         </InputGroup>
+                                                        <Button type='submit' className='mt-3'>Save</Button>
                                                     </Form>
                                                 </div>
                                                 :
